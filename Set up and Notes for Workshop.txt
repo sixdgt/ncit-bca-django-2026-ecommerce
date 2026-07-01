@@ -1,0 +1,29 @@
+1. Installing virtualenv in the project
+python -m venv env
+# here `env` is the identifier for virtual environment. It can be named as any identifier.
+
+2. Activate virtual environment
+# for windows
+env\Scripts\activate
+
+# for Linux and Mac
+source \env\bin\activate
+
+3. Create a requirements.txt
+pip freeze > requirements.txt
+# it will list all the packages installed with version so
+that no need to install packages manually one by one when the project is shift or access from another directory or machine
+
+4. Install django in the project root folder
+pip install django
+
+5. Check the installed package
+pip freeze requirements.txt
+
+6. Add packages to requirements.txt file
+pip freeze > requirements.txt
+
+7. Creating Django project
+django-admin startproject <project_name>
+for example:
+django-admin startproject project_ecommerce

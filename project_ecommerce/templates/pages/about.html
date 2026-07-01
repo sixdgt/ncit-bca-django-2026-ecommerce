@@ -1,0 +1,32 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} About Us {% endblock %}
+
+{% block body_content %}
+    <h1>About Us</h1>
+    <p>This is the about page for our Django application.</p>
+    <hr>
+    <h4>{{ title }}</h4>
+    <p>List of sample products:</p>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>S.NO</th>
+                <th>Product Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in products %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ product }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% for product in products %}
+        <div>
+            <h5>{{ product }}</h5>
+        </div>
+    {% endfor %}
+{% endblock %}
