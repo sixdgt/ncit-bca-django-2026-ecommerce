@@ -1,0 +1,34 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Product Index{% endblock %}
+
+{% block body_content %}
+<a href="{% url 'product.create' %}" class="btn btn-primary btn-block btn-sm mb-3">Create Product</a>
+<h1>Product List</h1>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>S.NO</th>
+            <th>Title</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Description</th>
+            <th colspan="3">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for product in products %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ product.title }}</td>
+            <td>{{ product.price }}</td>
+            <td>{{ product.quantity }}</td>
+            <td>{{ product.description }}</td>
+            <td><a href="{% url 'product.view' product.id %}" class="btn btn-sm btn-info">View</a></td>
+            <td><a href="{% url 'product.edit' product.id %}" class="btn btn-sm btn-primary">Edit</a></td>
+            <td><a href="{% url 'product.delete' product.id %}" class="btn btn-sm btn-danger">Delete</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

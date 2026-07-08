@@ -1,0 +1,37 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body_content %}
+    <div class="d-flex flex-column align-items-center justify-content-around width-100 bg-light p-4 width-100">
+        <a href="{% url 'product.index' %}" class="btn btn-primary btn-block btn-sm mb-3">View Product List</a>
+
+        <h1>{{ title }}</h1>
+        <form method="post" action="{% if product.instance.id %}
+        {% url 'product.update' product.instance.id %}
+        {% else %}
+        {% url 'product.create' %}
+        {% endif %}" class="d-flex flex-column 
+        align-item-center justify-content-around width-100 flex-wrap border border-1 box-shadow p-3 mb-5 bg-light">
+            {% csrf_token %}
+
+            {{ product_form.as_p }}
+
+            <input type="submit" value="{{ button_text }}" class="btn btn-primary btn-sm btn-block">
+        </form>
+    </div>
+{% endblock %}
+
+{% block custom_js %}
+<script>
+    window.addEventListener('load', () => {
+        const slug = document.getElementById('id_slug');
+        slug.readOnly = true; // Make the slug field read-only
+        const title = document.getElementById('id_title');
+        title.addEventListener('input', () => {
+            // here RegExp is used to replace spaces with hyphens and remove any non-alphanumeric characters
+            slug.value = title.value.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
+        });
+    });
+</script>
+{% endblock %}
