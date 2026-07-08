@@ -7,6 +7,9 @@
         <a href="{% url 'product.index' %}" class="btn btn-primary btn-block btn-sm mb-3">View Product List</a>
 
         <h1>{{ title }}</h1>
+
+        {% include "partials/messages.html" %}
+        
         <form method="post" action="{% if product_form.instance.id %}
             {% url 'product.edit' product_form.instance.id %}
         {% else %}

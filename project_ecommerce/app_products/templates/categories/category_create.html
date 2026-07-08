@@ -4,6 +4,9 @@
 
 {% block body_content %}
 <h1>Product Category Create</h1>
+
+{% include "partials/messages.html" %}
+
 <form method="POST" action="{% url 'category.create' %}">
     {% csrf_token %}
 

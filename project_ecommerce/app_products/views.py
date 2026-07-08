@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from app_products.forms import ProductCategoryForm, ProductForm, ProductImageForm
 from app_products.models import ProductCategory, Product, ProductImage
+from django.contrib import messages
 
 # Create your views here.
 def product_category_create(request):
@@ -10,6 +11,10 @@ def product_category_create(request):
         
         if form_data.is_valid():
             form_data.save()
+            messages.success(request, "Category created successfully!")
+            return redirect("category.create")
+        else:
+            messages.error(request, "Error creating category. Please check the form for errors.")
             return redirect("category.create")
         
     category_form = ProductCategoryForm()
@@ -30,6 +35,10 @@ def product_create(request):
 
         if form_data.is_valid():
             form_data.save()
+            messages.success(request, "Product created successfully!")
+            return redirect("product.create")
+        else:
+            messages.error(request, "Error creating product. Please check the form for errors.")
             return redirect("product.create")
     else:
         product_form = ProductForm()
@@ -73,10 +82,15 @@ def product_edit(request, pk):
 
         if form_data.is_valid():
             form_data.save()
+            messages.success(request, "Product updated successfully!")
             return redirect("product.index")
+        else:
+            messages.error(request, "Error updating product. Please check the form for errors.")
+            return redirect("product.edit", pk=pk)
     else:
         # re-using product_form.html template for product edit form
         product_form = ProductForm(instance=product)
+
     context = {
         "product_form": product_form,
         "product": product,
@@ -91,4 +105,5 @@ def product_delete(request, pk):
     """
     product = Product.objects.get(pk=pk)
     product.delete()
+    messages.success(request, "Product deleted successfully!")
     return redirect("product.index")
