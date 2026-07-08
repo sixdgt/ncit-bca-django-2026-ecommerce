@@ -24,9 +24,15 @@
             <td>{{ product.price }}</td>
             <td>{{ product.quantity }}</td>
             <td>{{ product.description }}</td>
-            <td><a href="{% url 'product.view' product.id %}" class="btn btn-sm btn-info">View</a></td>
-            <td><a href="{% url 'product.edit' product.id %}" class="btn btn-sm btn-primary">Edit</a></td>
-            <td><a href="{% url 'product.delete' product.id %}" class="btn btn-sm btn-danger">Delete</a></td>
+            <td><a href="{% url 'product.view' product.id %}" class="btn btn-sm btn-info">
+                <i class="fa-solid fa-eye"></i></a>
+            </td>
+            <td><a href="{% url 'product.edit' product.id %}" class="btn btn-sm btn-primary">
+                <i class="fa-solid fa-pencil"></i></a>
+            </td>
+            <td><a href="{% url 'product.delete' product.id %}" class="btn btn-sm btn-danger">
+                <i class="fa-solid fa-trash"></i></a>
+            </td>
         </tr>
         {% endfor %}
     </tbody>

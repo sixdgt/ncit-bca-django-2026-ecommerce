@@ -58,7 +58,7 @@ def product_view(request, pk):
     context = {
         "product": product
     }
-    return render(request, "products/product_view.html", context)
+    return render(request, "products/product_detail.html", context)
 
 def product_edit(request, pk):
     """
@@ -77,13 +77,13 @@ def product_edit(request, pk):
     else:
         # re-using product_form.html template for product edit form
         product_form = ProductForm(instance=product)
-        context = {
-            "product_form": product_form,
-            "product": product,
-            "title": "Edit Product",
-            "button_text": "Update Product"
-        }
-        return render(request, "products/product_form.html", context)
+    context = {
+        "product_form": product_form,
+        "product": product,
+        "title": "Edit Product",
+        "button_text": "Update Product"
+    }
+    return render(request, "products/product_form.html", context)
 
 def product_delete(request, pk):
     """

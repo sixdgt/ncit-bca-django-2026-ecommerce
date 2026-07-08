@@ -3,16 +3,15 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block body_content %}
-    <div class="d-flex flex-column align-items-center justify-content-around width-100 bg-light p-4 width-100">
+    <div class="width-100 bg-light p-4">
         <a href="{% url 'product.index' %}" class="btn btn-primary btn-block btn-sm mb-3">View Product List</a>
 
         <h1>{{ title }}</h1>
-        <form method="post" action="{% if product.instance.id %}
-        {% url 'product.update' product.instance.id %}
+        <form method="post" action="{% if product_form.instance.id %}
+            {% url 'product.edit' product_form.instance.id %}
         {% else %}
-        {% url 'product.create' %}
-        {% endif %}" class="d-flex flex-column 
-        align-item-center justify-content-around width-100 flex-wrap border border-1 box-shadow p-3 mb-5 bg-light">
+            {% url 'product.create' %}
+        {% endif %}" class="d-flex flex-column border border-1 box-shadow p-3 mb-5 bg-light">
             {% csrf_token %}
 
             {{ product_form.as_p }}
