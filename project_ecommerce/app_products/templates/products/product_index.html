@@ -4,9 +4,21 @@
 
 {% block body_content %}
 
-<a href="{% url 'product.create' %}" class="btn btn-primary btn-block btn-sm mb-3">Create Product</a>
+<div class="d-flex flex-row justify-content-between mb-3 mt-4">
+    <a href="{% url 'product.create' %}" class="btn btn-primary btn-block btn-sm mb-3"><i class="fa-solid fa-plus"></i> Create Product</a>
+    <a href="{% url 'product.index' %}" class="btn btn-warning btn-block btn-sm mb-3"><i class="fa-solid fa-broom"></i> Clear Search</a>
+</div>
 
 {% include "partials/messages.html" %}
+<!-- for searching products -->
+<form method="get" action="{% url 'product.index' %}">
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Search products..." name="search" value="{{ request.GET.search }}">
+        <div class="input-group-append">
+            <button class="btn btn-outline-success" type="submit"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
+        </div>
+    </div> 
+</form>
 
 <h1>Product List</h1>
 <table class="table table-hover">
@@ -41,4 +53,32 @@
         {% endfor %}
     </tbody>
 </table>
+<!-- for pagination of products -->
+{% if products.has_other_pages %}
+    <nav>
+        <ul class="pagination">
+            {% if products.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ products.previous_page_number }}">Previous</a>
+                </li>
+            {% endif %}
+            {% for num in products.paginator.page_range %}
+                {% if products.number == num %}
+                    <li class="page-item active">
+                        <span class="page-link">{{ num }}</span>
+                    </li>
+                {% else %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+            {% if products.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ products.next_page_number }}">Next</a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+{% endif %}
 {% endblock %}

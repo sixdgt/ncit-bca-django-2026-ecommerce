@@ -1,13 +1,13 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from app_products.models import Product, ProductCategory
 
 # Create your views here.
 def landing_page(request):
+    categories = ProductCategory.objects.all()
+    products = Product.objects.filter(is_active=True)
     context = {
-        "title": "DJango Workshop",
-        "subtitle": "NCIT | BCA",
-        "message": "Welcome to the Django Workshop. This is a sample landing page for the e-commerce project.",
-        "year": 2026
+        "categories": categories,
+        "products": products
     }
     return render(request, 'landing.html', context)
 
