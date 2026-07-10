@@ -2,7 +2,15 @@
 
 {% block title %}Product Index{% endblock %}
 
+<!-- must load static first -->
+{% load static %}
+
+{% block custom_css %}
+    <link rel="stylesheet" href="{% static 'css/product_index.css' %}" type="text/css">
+{% endblock %}
+
 {% block body_content %}
+<span id="today-date"></span>
 
 <div class="d-flex flex-row justify-content-between mb-3 mt-4">
     <a href="{% url 'product.create' %}" class="btn btn-primary btn-block btn-sm mb-3"><i class="fa-solid fa-plus"></i> Create Product</a>
@@ -81,4 +89,8 @@
         </ul>
     </nav>
 {% endif %}
+{% endblock %}
+
+{% block custom_js %}
+    <script src="{% static 'js/product_index.js' %}"></script>
 {% endblock %}

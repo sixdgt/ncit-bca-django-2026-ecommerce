@@ -117,3 +117,32 @@ def product_delete(request, pk):
     product.delete()
     messages.success(request, "Product deleted successfully!")
     return redirect("product.index")
+
+def product_image_add(request, product_id):
+    """
+    This view is responsible for adding a new product image for a specific product.
+    """
+    product = Product.objects.get(pk=product_id)
+
+    if request.method == "POST":
+        request_data = request.POST
+        request_files = request.FILES
+        form_data = ProductImageForm(request_data, request_files)
+        if form_data.is_valid():
+            product_image = form_data.save(commit=False)
+            product_image.product = product
+            product_image.save()
+            messages.success(request, "Product image added successfully!")
+            return redirect("product.view", pk=product_id)
+        else:
+            messages.error(request, "Error adding product image. Please check the form for errors.")
+            return redirect("product.view", pk=product_id)
+    else:
+        product_image_form = ProductImageForm()
+        context = {
+            "product_image_form": product_image_form,
+            "product": product,
+            "title": "Add Product Image",
+            "button_text": "Add Image"
+        }
+        return render(request, "products/product_image_form.html", context)

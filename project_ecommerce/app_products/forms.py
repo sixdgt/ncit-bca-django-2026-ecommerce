@@ -35,3 +35,10 @@ class ProductImageForm(forms.ModelForm):
     class Meta:
         model = ProductImage
         fields = ['product', 'image', 'img_order', 'is_featured']
+
+        widgets = {
+            'product': forms.Select(attrs={'class': 'form-control mb-2'}),
+            'image': forms.ClearableFileInput(attrs={'class': 'form-control mb-2'}),
+            'img_order': forms.NumberInput(attrs={'class': 'form-control mb-2'}),
+            'is_featured': forms.CheckboxInput(attrs={'class': 'form-check-input mb-2'})
+        }

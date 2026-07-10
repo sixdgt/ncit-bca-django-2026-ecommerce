@@ -10,4 +10,7 @@ urlpatterns = [
     path('view/<int:pk>/', views.product_view, name='product.view'),
     path('edit/<int:pk>/', views.product_edit, name='product.edit'),
     path('delete/<int:pk>/', views.product_delete, name='product.delete'),
+    # for product image create and list
+    path('image/create/<int:product_id>/', views.product_image_add, name='product_image.create'),
+    path('image/edit/<int:product_id>/', views.product_image_add, name='product_image.edit'),
 ]

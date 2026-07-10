@@ -1,0 +1,25 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body_content %}
+    <div class="width-100 bg-light p-4">
+        <a href="{% url 'product.view' product.id %}" class="btn btn-primary btn-block btn-sm mb-3">Back to Details</a>
+
+        <h1>{{ title }}</h1>
+
+        {% include "partials/messages.html" %}
+        
+        <form method="post" action="{% if product_image_form.instance.id %}
+            {% url 'product_image.edit' product_image_form.instance.id %}
+        {% else %}
+            {% url 'product_image.create' product.id %}
+        {% endif %}" class="d-flex flex-column border border-1 box-shadow p-3 mb-5 bg-light" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            {{ product_image_form.as_p }}
+
+            <input type="submit" value="{{ button_text }}" class="btn btn-primary btn-sm btn-block">
+        </form>
+    </div>
+{% endblock %}
