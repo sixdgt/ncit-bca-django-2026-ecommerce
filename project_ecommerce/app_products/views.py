@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from app_products.forms import ProductCategoryForm, ProductForm, ProductImageForm
 from app_products.models import ProductCategory, Product, ProductImage
 from django.contrib import messages
@@ -119,30 +119,28 @@ def product_delete(request, pk):
     return redirect("product.index")
 
 def product_image_add(request, product_id):
-    """
-    This view is responsible for adding a new product image for a specific product.
-    """
-    product = Product.objects.get(pk=product_id)
+    product = get_object_or_404(Product, pk=product_id)
 
     if request.method == "POST":
-        request_data = request.POST
-        request_files = request.FILES
-        form_data = ProductImageForm(request_data, request_files)
-        if form_data.is_valid():
-            product_image = form_data.save(commit=False)
+        form = ProductImageForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            product_image = form.save(commit=False)
             product_image.product = product
             product_image.save()
+
             messages.success(request, "Product image added successfully!")
             return redirect("product.view", pk=product_id)
         else:
-            messages.error(request, "Error adding product image. Please check the form for errors.")
-            return redirect("product.view", pk=product_id)
+            messages.error(request, "Please correct the errors below.")
     else:
-        product_image_form = ProductImageForm()
-        context = {
-            "product_image_form": product_image_form,
-            "product": product,
-            "title": "Add Product Image",
-            "button_text": "Add Image"
-        }
-        return render(request, "products/product_image_form.html", context)
+        form = ProductImageForm()
+
+    context = {
+        "product_image_form": form,
+        "product": product,
+        "title": "Add Product Image",
+        "button_text": "Add Image"
+    }
+
+    return render(request, "products/product_image_form.html", context)
