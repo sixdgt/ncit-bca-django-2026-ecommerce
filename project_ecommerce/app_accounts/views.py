@@ -1,13 +1,10 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from app_accounts.forms import LoginForm, RegisterForm, VerifyForm
 from app_accounts.models import CustomUser
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from app_accounts.utils import generate_verification_code, send_verification_email
-
-# Create your views here.
-from django.shortcuts import render, redirect, get_object_or_404
 from .forms import VerifyForm
 from .models import CustomUser
 
@@ -40,21 +37,28 @@ def verify_page(request):
 
 def login_page(request):
     if request.method == "POST":
-        request_data = request.POST
-        form_data = LoginForm(request_data)
-        if form_data.is_valid():
-            username = form_data.cleaned_data['username']
-            password = form_data.cleaned_data['password']
-            user = authenticate(request, username=username, password=password)
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        try:
+            user = authenticate(username=username, password=password)
             if user is not None:
-                login(request, user)
-                
-                messages.success(request, 'Login successful.')
-                return redirect('home')
+                custom_user = CustomUser.objects.filter(user=user)
+                if custom_user.exists() and custom_user.first().is_verified:
+                    login(request, user)
+                    request.session['verify_user_id'] = user.id
+                    messages.success(request, 'Login successful.')
+                    return redirect('product.index')
+                else:
+                    messages.error(request, 'Your account is not verified. Please check your email for the verification code.')
+                    request.session['verify_user_id'] = user.id
+                    return redirect('verify.page')
             else:
                 messages.error(request, 'Invalid username or password.')
-    else:
-        form_data = LoginForm()
+                return redirect('login.page')
+        except User.DoesNotExist:
+            messages.error(request, 'Invalid username or password.')
+            return redirect('login.page')
+    form_data = LoginForm()
     context = {
         'form_data': form_data
     }
@@ -68,8 +72,7 @@ def register_page(request):
         if form_data.is_valid():
             user = form_data.save()
             # for verification code storing to CustomUser model
-            custom_user = CustomUser.objects.create(user=
-            user, verification_code=code, is_verified=False)
+            custom_user = CustomUser.objects.create(user=user, verification_code=code, is_verified=False)
             # verification code will be sent to user email for verification
             try:
                 send_verification_email(user.email, code)
