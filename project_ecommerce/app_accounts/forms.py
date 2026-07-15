@@ -13,6 +13,10 @@ class LoginForm(forms.ModelForm):
         }
 
 class RegisterForm(forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput(
+        attrs={'class': 'form-control', 'placeholder': 'Enter password'}
+    ))
+
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'username', 'email', 'password']
@@ -22,8 +26,15 @@ class RegisterForm(forms.ModelForm):
             'last_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter last name'}),
             'username': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter username'}),
             'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Enter email'}),
-            'password': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Enter password'}),
         }
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.set_password(self.cleaned_data['password'])
+
+        if commit:
+            user.save()
+        return user
 
 class VerifyForm(forms.ModelForm):
     class Meta:

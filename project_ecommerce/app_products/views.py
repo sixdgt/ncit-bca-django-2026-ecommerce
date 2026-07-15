@@ -74,8 +74,10 @@ def product_view(request, pk):
     This view is responsible for displaying a single product based on its primary key (pk).
     """
     product = Product.objects.get(pk=pk) # similar to SELECT * FROM products WHERE id = pk in SQL
+    product_images = ProductImage.objects.filter(product=product).order_by('img_order')
     context = {
-        "product": product
+        "product": product,
+        "product_images": product_images
     }
     return render(request, "products/product_detail.html", context)
 
@@ -122,25 +124,25 @@ def product_image_add(request, product_id):
     product = get_object_or_404(Product, pk=product_id)
 
     if request.method == "POST":
-        form = ProductImageForm(request.POST, request.FILES)
+        images = request.FILES.getlist('image')
+        orders = request.POST.getlist('img_order')
 
-        if form.is_valid():
-            product_image = form.save(commit=False)
-            product_image.product = product
-            product_image.save()
+        for i, image in enumerate(images):
+            ProductImage.objects.create(
+                product=product,
+                image=image,
+                img_order=int(orders[i]) if i < len(orders) and orders[i] else 0,
+                is_featured=(i == 0)
+            )
 
-            messages.success(request, "Product image added successfully!")
-            return redirect("product.view", pk=product_id)
-        else:
-            messages.error(request, "Please correct the errors below.")
+        messages.success(request, "Images added successfully!")
+        return redirect("product.view", pk=product_id)
     else:
         form = ProductImageForm()
 
-    context = {
+    return render(request, "products/product_image_form.html", {
         "product_image_form": form,
         "product": product,
-        "title": "Add Product Image",
-        "button_text": "Add Image"
-    }
-
-    return render(request, "products/product_image_form.html", context)
+        "title": "Add Product Images",
+        "button_text": "Upload Images"
+    })

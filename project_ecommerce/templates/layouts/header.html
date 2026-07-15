@@ -1,29 +1,56 @@
 {% load static %}
 <header>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-            <img src="{% static 'images/testlogo.jpg' %}" alt="Logo" width="30" height="30" class="d-inline-block align-text-top">
+
+            <img src="{% static 'images/testlogo.jpg' %}" alt="Logo" width="30" height="30">
             <a class="navbar-brand" href="#">My E-Commerce</a>
-            
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+                <span class="navbar-toggler-icon"></span>
             </button>
+
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{% url 'landing.page' %}">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'about.page' %}">About</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'faq.page' %}">FAQ</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'login.page' %}">Login</a>
-                </li>
-            </ul>
+                
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'landing.page' %}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'about.page' %}">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'faq.page' %}">FAQ</a>
+                    </li>
+                </ul>
+
+                <!-- Right side -->
+                <ul class="navbar-nav ms-auto">
+
+                    <!-- Wishlist -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'wishlist.page' %}">
+                            <i class="fa-solid fa-heart"></i> Wishlist
+                        </a>
+                    </li>
+
+                    <!-- Cart -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'cart.page' %}">
+                            <i class="fa-solid fa-shopping-cart"></i> Cart
+                        </a>
+                    </li>
+
+                    <!-- Login -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login.page' %}">
+                            <i class="fa-solid fa-user"></i> Login
+                        </a>
+                    </li>
+
+                </ul>
+
             </div>
         </div>
-        </nav>
+    </nav>
 </header>
