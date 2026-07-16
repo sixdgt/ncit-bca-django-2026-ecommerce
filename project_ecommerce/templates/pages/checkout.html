@@ -1,33 +1,46 @@
 <!-- templates/checkout.html -->
 {% extends 'layouts/base.html' %}
 
-{% block content %}
+{% block body_content %}
 <div class="container mt-4">
+    <h4>Order Summary</h4>
+    <ul class="list-group mb-3">
+        {% for item in cart_items %}
+            <li class="list-group-item d-flex justify-content-between">
+                {{ item.product.title }} (x{{ item.quantity }})
+                <span>Rs. {{ item.total_price }}</span>
+            </li>
+        {% endfor %}
+        <li class="list-group-item d-flex justify-content-between">
+            <strong>Total</strong>
+            <strong>Rs. {{ total_price }}</strong>
+        </li>
+    </ul>
     <h2>Checkout</h2>
 
     <form method="POST">
-        {% csrf_token %}
+    {% csrf_token %}
 
-        <div class="mb-3">
-            <label>Name</label>
-            <input type="text" class="form-control">
-        </div>
+    <div class="mb-3">
+        <label>Name</label>
+        <input type="text" name="name" class="form-control" required>
+    </div>
 
-        <div class="mb-3">
-            <label>Address</label>
-            <textarea class="form-control"></textarea>
-        </div>
+    <div class="mb-3">
+        <label>Address</label>
+        <textarea name="address" class="form-control" required></textarea>
+    </div>
 
-        <div class="mb-3">
-            <label>Payment Method</label>
-            <select class="form-control">
-                <option>Cash on Delivery</option>
-                <option>eSewa</option>
-                <option>Khalti</option>
-            </select>
-        </div>
+    <div class="mb-3">
+        <label>Payment Method</label>
+        <select name="payment_method" class="form-control" required>
+            <option value="cod">Cash on Delivery</option>
+            <option value="esewa">eSewa</option>
+            <option value="khalti">Khalti</option>
+        </select>
+    </div>
 
-        <button class="btn btn-success">Place Order</button>
-    </form>
+    <button class="btn btn-success">Place Order</button>
+</form>
 </div>
 {% endblock %}

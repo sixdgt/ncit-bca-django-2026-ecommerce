@@ -60,10 +60,10 @@
                 <small class="text-muted">Stock: {{ product.quantity }}</small>
 
                 <div class="d-flex justify-content-between mt-2">
-                    <a href="#" class="btn btn-sm btn-outline-primary">
+                    <a href="{% url 'product.detail' product.slug product.id %}" class="btn btn-sm btn-outline-primary">
                         <i class="fa-solid fa-eye"></i>
                     </a>
-                    <a href="#" class="btn btn-sm btn-success">
+                    <a href="{% url 'add.cart' product.id %}" class="btn btn-sm btn-success">
                         <i class="fa-solid fa-cart-arrow-down"></i>
                     </a>
                 </div>

@@ -29,14 +29,14 @@
 
                     <!-- Wishlist -->
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="{% url 'wishlist.page' %}">
                             <i class="fa-solid fa-heart"></i> Wishlist
                         </a>
                     </li>
 
                     <!-- Cart -->
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="{% url 'cart.page' %}">
                             <i class="fa-solid fa-shopping-cart"></i> Cart
                         </a>
                     </li>
@@ -49,9 +49,15 @@
                     </li>
                     {% endif %}
                     {% if request.user.is_authenticated %}
+                    <!-- Profile -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'profile' %}">
+                            <i class="fa-solid fa-user"></i> Profile
+                        </a>
+                    </li>
                     <!-- Logout -->
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="{% url 'logout' %}">
                             <i class="fa-solid fa-right-from-bracket"></i> Logout
                         </a>
                     </li>

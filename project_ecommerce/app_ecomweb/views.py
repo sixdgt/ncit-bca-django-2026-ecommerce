@@ -21,11 +21,9 @@ def about_page(request):
 def faq_page(request):
     return render(request, 'pages/faq.html')
 
-def cart_page(request):
-    return render(request, 'pages/cart.html')
-
-def wishlist_page(request):
-    return render(request, 'pages/wishlist.html')
-
-def checkout_page(request):
-    return render(request, 'pages/checkout.html')
+def product_detail(request, slug, product_id):
+    product = Product.objects.get(id=product_id, slug=slug)
+    context = {
+        "product": product
+    }
+    return render(request, 'pages/product_detail.html', context)

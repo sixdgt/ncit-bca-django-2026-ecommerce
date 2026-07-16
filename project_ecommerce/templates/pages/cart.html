@@ -1,10 +1,11 @@
 <!-- templates/cart.html -->
 {% extends 'layouts/base.html' %}
 
-{% block content %}
+{% block body_content %}
 <div class="container mt-4">
     <h2>Your Cart</h2>
 
+    {% if cart_items %}
     <table class="table">
         <thead>
             <tr>
@@ -16,17 +17,32 @@
         </thead>
         <tbody>
             <!-- Loop items later -->
+            <p>Total items: {{ cart_items|length }}</p>
+            {% for item in cart_items %}
             <tr>
-                <td>Sample Product</td>
-                <td>$10</td>
-                <td>1</td>
-                <td>$10</td>
+                <td>{{ item.product.title }}</td>
+                <td>${{ item.product.price|floatformat:2 }}</td>
+                <td>
+                    <form method="post" action="{% url 'update.cart.item' item.product.id %}">
+                        {% csrf_token %}
+                        <input type="number" name="quantity" value="{{ item.quantity }}" min="1">
+                        <button type="submit" class="btn btn-sm btn-outline-primary">Update</button>
+                    </form>
+                </td>
+                <td>${{ item.total_price|floatformat:2 }}</td>
             </tr>
+            {% endfor %}
         </tbody>
     </table>
 
     <a href="{% url 'checkout.page' %}" class="btn btn-primary">
         Proceed to Checkout
     </a>
+    {% else %}
+        <p>Your cart is empty.</p>
+        <a href="{% url 'landing.page' %}" class="btn btn-secondary">
+            Continue Shopping
+        </a>
+    {% endif %}
 </div>
 {% endblock %}

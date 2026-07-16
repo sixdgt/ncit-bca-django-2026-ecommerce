@@ -49,6 +49,8 @@ INSTALLED_APPS = [
     'app_ecomweb',
     'app_accounts',
     'app_products',
+    'app_carts',
+    'app_orders',
 ]
 
 MIDDLEWARE = [

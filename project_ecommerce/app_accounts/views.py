@@ -5,9 +5,35 @@ from app_accounts.models import CustomUser
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from app_accounts.utils import generate_verification_code, send_verification_email
+from app_orders.models import Order
 from .forms import VerifyForm
 from .models import CustomUser
+from django.contrib.auth.decorators import login_required
 
+# Create your views here.  
+@login_required
+def profile_view(request):
+    user = request.user
+
+    # All orders (latest first)
+    orders = Order.objects.filter(user=user).order_by('-created_at')
+
+    # Latest order
+    latest_order = orders.first()
+
+    return render(request, 'accounts/profile.html', {
+        'user': user,
+        'orders': orders,
+        'latest_order': latest_order
+    })
+
+@login_required
+def logout_view(request):
+    logout(request)
+    messages.success(request, 'You have been logged out successfully.')
+    return redirect('login.page')
+
+@login_required
 def verify_page(request):
     user_id = request.session.get('verify_user_id')
 
@@ -47,7 +73,7 @@ def login_page(request):
                     login(request, user)
                     request.session['verify_user_id'] = user.id
                     messages.success(request, 'Login successful.')
-                    return redirect('product.index')
+                    return redirect('profile')
                 else:
                     messages.error(request, 'Your account is not verified. Please check your email for the verification code.')
                     request.session['verify_user_id'] = user.id

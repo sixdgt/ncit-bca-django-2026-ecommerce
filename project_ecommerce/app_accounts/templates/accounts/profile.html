@@ -1,0 +1,64 @@
+{% extends 'layouts/base.html' %}
+
+{% block body_content %}
+<div class="container mt-4">
+
+    <h2>My Profile</h2>
+
+    <!-- USER INFO -->
+    <div class="card mt-3 p-3">
+        <h4>User Info</h4>
+        <p><strong>Username:</strong> {{ user.username }}</p>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+    </div>
+
+    <!-- LATEST ORDER -->
+    {% if latest_order %}
+    <div class="card mt-4 p-3">
+        <h4>Latest Order</h4>
+        <p><strong>Order ID:</strong> #{{ latest_order.id }}</p>
+        <p><strong>Date:</strong> {{ latest_order.created_at|date:"M d, Y" }}</p>
+        <p><strong>Total:</strong> Rs. {{ latest_order.total_price }}</p>
+
+        <a href="{% url 'order_detail' latest_order.id %}" class="btn btn-primary btn-sm">
+            View Order
+        </a>
+    </div>
+    {% endif %}
+
+    <!-- ORDER HISTORY -->
+    <div class="card mt-4 p-3">
+        <h4>Order History</h4>
+
+        {% if orders %}
+        <table class="table mt-3">
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Date</th>
+                    <th>Total</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td>#{{ order.id }}</td>
+                    <td>{{ order.created_at|date:"M d, Y" }}</td>
+                    <td>Rs. {{ order.total_price }}</td>
+                    <td>
+                        <a href="{% url 'order_detail' order.id %}" class="btn btn-sm btn-outline-primary">
+                            View
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+            <p>No orders yet.</p>
+        {% endif %}
+    </div>
+
+</div>
+{% endblock %}
