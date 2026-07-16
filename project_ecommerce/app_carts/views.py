@@ -23,7 +23,6 @@ def wishlist_page(request):
     }
     return render(request, 'pages/wishlist.html', context)
 
-
 @login_required
 def add_to_cart(request, product_id):
     user = request.user

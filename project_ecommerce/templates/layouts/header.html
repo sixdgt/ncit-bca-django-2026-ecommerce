@@ -23,7 +23,11 @@
                         <a class="nav-link" href="{% url 'faq.page' %}">FAQ</a>
                     </li>
                 </ul>
-
+                <!-- Search Form -->
+                <form class="d-flex me-3" method="get" action="{% url 'product.search' %}">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
                 <!-- Right side -->
                 <ul class="navbar-nav ms-auto">
 

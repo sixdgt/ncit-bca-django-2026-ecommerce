@@ -33,7 +33,6 @@ def logout_view(request):
     messages.success(request, 'You have been logged out successfully.')
     return redirect('login.page')
 
-@login_required
 def verify_page(request):
     user_id = request.session.get('verify_user_id')
 
